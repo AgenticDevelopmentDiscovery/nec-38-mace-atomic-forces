@@ -39,6 +39,7 @@ jobs:
 
       # pandoc renders every output; xelatex makes the two PDFs;
       # librsvg2-bin lets pandoc place SVG figures into them;
+      # lmodern is pandoc's default LaTeX font package for the document PDF;
       # just runs the same recipes you run locally.
       - name: Install the toolchain
         run: |
@@ -49,7 +50,25 @@ jobs:
             texlive-xetex \
             texlive-latex-extra \
             texlive-fonts-recommended \
+            lmodern \
             librsvg2-bin
+
+      # The Metropolis beamer theme (metadata.yaml `theme:`) sets its slide
+      # fonts to Fira Sans / Fira Mono via fontspec, which needs them
+      # installed as real system fonts — no apt package ships them under
+      # that name, so fetch the same open-source (SIL OFL) files pandoc's
+      # xelatex run expects and register them with fontconfig.
+      - name: Install Fira Sans / Fira Mono fonts
+        run: |
+          mkdir -p ~/.fonts
+          base="https://raw.githubusercontent.com/google/fonts/main/ofl"
+          for f in FiraSans-Regular FiraSans-Italic FiraSans-Bold FiraSans-BoldItalic FiraSans-Light FiraSans-LightItalic; do
+            curl -sL -o ~/.fonts/"$f.ttf" "$base/firasans/$f.ttf"
+          done
+          for f in FiraMono-Regular FiraMono-Medium FiraMono-Bold; do
+            curl -sL -o ~/.fonts/"$f.ttf" "$base/firamono/$f.ttf"
+          done
+          fc-cache -f ~/.fonts
 
       # Builds output/document.pdf, output/slides.pdf and _site/ — including
       # copying both PDFs into _site/, which is what the site's header links to.
