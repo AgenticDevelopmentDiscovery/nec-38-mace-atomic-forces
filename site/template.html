@@ -21,6 +21,17 @@ $endif$
   </nav>
 </header>
 
+<div class="hero-anim">
+  <figure>
+    <canvas id="atoms-canvas" role="img" aria-label="Animation of atoms moving and forming temporary neighbor bonds"></canvas>
+    <figcaption>Atoms in motion — the graph of neighbors MACE reads at every step.</figcaption>
+  </figure>
+  <figure>
+    <canvas id="curve-canvas" role="img" aria-label="Animation of a model curve bending to fit scattered training data points"></canvas>
+    <figcaption>Learning a potential — a model curve bending to fit training data.</figcaption>
+  </figure>
+</div>
+
 <div class="layout">
 
 $if(toc)$
@@ -44,6 +55,176 @@ $endif$
 $body$
   </main>
 </div>
+
+<script>
+(function () {
+  "use strict";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var rootStyle = getComputedStyle(document.documentElement);
+  function cssVar(name, fallback) {
+    var v = rootStyle.getPropertyValue(name).trim();
+    return v || fallback;
+  }
+  var colors = {
+    accent: cssVar("--accent", "#c026a3"),
+    accent2: cssVar("--accent-2", "#7c3aed"),
+    pop: cssVar("--pop", "#eab308"),
+    muted: cssVar("--muted", "#7a6a99"),
+    line: cssVar("--line", "#ecd9f7")
+  };
+
+  function fitCanvas(canvas) {
+    var rect = canvas.getBoundingClientRect();
+    var ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.round(rect.width * ratio));
+    canvas.height = Math.max(1, Math.round(rect.height * ratio));
+    var ctx = canvas.getContext("2d");
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    return { ctx: ctx, w: rect.width, h: rect.height };
+  }
+
+  /* ---- Atoms in motion: a small neighbor graph, moving ---- */
+  var atomsCanvas = document.getElementById("atoms-canvas");
+  if (atomsCanvas) {
+    var adims = fitCanvas(atomsCanvas);
+    window.addEventListener("resize", function () { adims = fitCanvas(atomsCanvas); });
+
+    var palette = [colors.accent, colors.accent2, colors.pop];
+    var atoms = [];
+    for (var i = 0; i < 8; i++) {
+      atoms.push({
+        x: 20 + Math.random() * 200,
+        y: 20 + Math.random() * 110,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: 6 + Math.random() * 4,
+        color: palette[i % palette.length]
+      });
+    }
+    var linkDist = 65;
+
+    function stepAtoms() {
+      var ctx = adims.ctx, w = adims.w, h = adims.h;
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.lineWidth = 1.2;
+      for (var i = 0; i < atoms.length; i++) {
+        for (var j = i + 1; j < atoms.length; j++) {
+          var a = atoms[i], b = atoms[j];
+          var dx = a.x - b.x, dy = a.y - b.y;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          if (d < linkDist) {
+            ctx.strokeStyle = colors.line;
+            ctx.globalAlpha = 1 - d / linkDist;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
+
+      atoms.forEach(function (a) {
+        a.x += a.vx; a.y += a.vy;
+        if (a.x < a.r || a.x > w - a.r) a.vx *= -1;
+        if (a.y < a.r || a.y > h - a.r) a.vy *= -1;
+        a.x = Math.min(Math.max(a.x, a.r), w - a.r);
+        a.y = Math.min(Math.max(a.y, a.r), h - a.r);
+        ctx.beginPath();
+        ctx.fillStyle = a.color;
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (!reduceMotion) requestAnimationFrame(stepAtoms);
+    }
+    stepAtoms();
+  }
+
+  /* ---- Learning a potential: a fitted curve bending onto data ---- */
+  var curveCanvas = document.getElementById("curve-canvas");
+  if (curveCanvas) {
+    var cdims = fitCanvas(curveCanvas);
+    window.addEventListener("resize", function () { cdims = fitCanvas(curveCanvas); });
+
+    var xmin = 0.65, xmax = 1.8, ymin = -1.3, ymax = 1.3;
+    function target(r) { return Math.pow(1 / r, 4) - 2 * Math.pow(1 / r, 2); }
+    var noise = [0.06, -0.09, 0.04, 0.1, -0.06, 0.07, -0.11, 0.03, 0.08, -0.04];
+    var totalPoints = noise.length;
+
+    function toPx(w, h, xv, yv) {
+      var pad = 10;
+      var px = pad + (xv - xmin) / (xmax - xmin) * (w - 2 * pad);
+      var py = h - pad - (yv - ymin) / (ymax - ymin) * (h - 2 * pad);
+      return [px, py];
+    }
+
+    function drawCurve(progress) {
+      var ctx = cdims.ctx, w = cdims.w, h = cdims.h;
+      ctx.clearRect(0, 0, w, h);
+
+      var origin = toPx(w, h, xmin, 0);
+      var originEnd = toPx(w, h, xmax, 0);
+      ctx.strokeStyle = colors.line;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(origin[0], origin[1]);
+      ctx.lineTo(originEnd[0], originEnd[1]);
+      ctx.stroke();
+
+      ctx.strokeStyle = colors.muted;
+      ctx.globalAlpha = 0.45;
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([3, 4]);
+      ctx.beginPath();
+      for (var i = 0; i <= 60; i++) {
+        var xv = xmin + (xmax - xmin) * i / 60;
+        var p = toPx(w, h, xv, target(xv));
+        if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.setLineDash([]);
+
+      var visible = Math.min(totalPoints, Math.floor(progress * totalPoints) + 1);
+      for (var k = 0; k < visible; k++) {
+        var xv2 = xmin + (xmax - xmin) * (k + 0.5) / totalPoints;
+        var yv2 = target(xv2) + noise[k];
+        var p2 = toPx(w, h, xv2, yv2);
+        ctx.beginPath();
+        ctx.fillStyle = colors.pop;
+        ctx.arc(p2[0], p2[1], 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      var fitProgress = Math.min(1, progress * 1.15);
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 2.4;
+      ctx.beginPath();
+      for (var j = 0; j <= 60; j++) {
+        var xv3 = xmin + (xmax - xmin) * j / 60;
+        var trueY = target(xv3);
+        var roughY = -0.2;
+        var yv3 = roughY + (trueY - roughY) * fitProgress;
+        var p3 = toPx(w, h, xv3, yv3);
+        if (j === 0) ctx.moveTo(p3[0], p3[1]); else ctx.lineTo(p3[0], p3[1]);
+      }
+      ctx.stroke();
+    }
+
+    var cycleMs = 4200, startTime = null;
+    function stepCurve(ts) {
+      if (!startTime) startTime = ts;
+      var progress = ((ts - startTime) % cycleMs) / cycleMs;
+      drawCurve(progress);
+      if (!reduceMotion) requestAnimationFrame(stepCurve);
+    }
+    if (reduceMotion) drawCurve(1); else requestAnimationFrame(stepCurve);
+  }
+})();
+</script>
 
 </body>
 </html>
