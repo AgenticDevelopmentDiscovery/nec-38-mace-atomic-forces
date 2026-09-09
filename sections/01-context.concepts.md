@@ -1,43 +1,44 @@
 # Context — spine
 
-> The register that does not ship. This file is never rendered into the document,
-> the slides, or the site — but the reviewers read it, and they judge whether what
-> it promises is turning into prose.
->
-> Keep it in note form. Prose here is a sign you wrote in the wrong file.
-
 ## Purpose
 
-Say WHAT the topic is and where it came from, so the reader can hold it in mind
-before being told why it matters or how to use it.
+Say WHAT MACE is and where it came from — a machine-learned interatomic
+potential — before arguing why it matters for agentic discovery or how it
+works internally.
 
 ## Claims
 
-> The load-bearing assertions of this section, one line each. In a tutorial these
-> are usually definitional: what the thing is, what it is not, what it replaced.
-> If a claim is not here, the reviewers will treat its appearance in the prose as
-> unplanned.
-
-- (claim)
-- (claim)
+- MACE is a program that predicts the potential energy of a set of atoms and
+  the force on each one, trained to reproduce quantum-mechanical (DFT)
+  calculations.
+- Molecular dynamics needs energy and forces recomputed at every timestep,
+  which is why simulation speed is the bottleneck DFT cannot clear and MACE
+  can.
+- MACE descends from a lineage: classical (fixed-form) force fields → DFT as
+  the accuracy ground truth → machine-learned potentials (Behler–Parrinello
+  neural network potentials, GAP, the Atomic Cluster Expansion) → MACE, which
+  folds the Atomic Cluster Expansion's many-body features into an equivariant
+  graph neural network.
+- "Foundation model" MACE variants (e.g. MACE-MP-0) are pretrained across most
+  of the periodic table, so a reader can use one without training anything
+  first.
 
 ## Decisions
 
-> Why the section reads the way it does. The definition you chose and the one you
-> rejected, how much history you kept and why. This is what stops the team
-> relitigating the same choice every round.
-
-- (decision — and what it was chosen over)
+- Defined MACE by what it does (predicts energy/forces fast, at near-DFT
+  accuracy) rather than by its architecture — the architecture is
+  `03-content`'s job, not context's.
+- Stated the classical-FF → DFT → ML-potential lineage briefly rather than as a
+  literature survey, because it explains why MACE's speed/accuracy trade-off is
+  the whole point, not a footnote.
 
 ## Open questions
 
-> What you do not know yet. Naming it here is cheap; discovering it in review is not.
-
-- (question)
+- How much detail on DFT belongs here versus assumed — see `topic.md` open
+  questions.
 
 ## Not doing
 
-> Scope you have deliberately excluded, so a reviewer does not report it as missing
-> and you do not drift back into it.
-
-- (excluded, and why)
+- Not explaining the Atomic Cluster Expansion math or equivariance here —
+  that's `03-content`'s "how it works."
+- Not covering agentic workflows here — that's `02-motivation`'s job.

@@ -1,87 +1,94 @@
 # Topic
 
-<!-- THE PROPOSAL. Never rendered into the document, the slides, or the site —
-     but every reviewer reads it, and the panel judges the tutorial against what
-     you promise here. Write it before you write a section.
-
-     This is the document-level counterpart to a section's `.concepts.md`: the
-     same job of holding intent separately from what ships, one level up.
-
-     Keep it short. A page is plenty. Delete these comments and the guidance
-     blockquotes as you fill it in. -->
-
 ## In one sentence
 
-> The topic, named and bounded, in a single sentence a stranger could repeat
-> back. If it takes two, the topic is probably two topics.
-
-Replace this line.
+MACE — a machine-learned interatomic potential for molecular dynamics —
+described from first principles and shown as a fast, near-quantum-accurate
+physics tool an agentic materials-discovery workflow can call in a loop.
 
 ## What it is
 
-> A paragraph of plain description. What is the tool, technique, or notion —
-> defined by what it does, not by what it is built from or why it is good.
->
-> This seeds `01-context`. If you cannot write it without arguing for the topic,
-> the argument is doing work the definition should be doing.
-
-Replace this paragraph.
+MACE is a program that takes the positions and chemical elements of a group of
+atoms and returns two things: the potential energy of that arrangement, and the
+force pushing or pulling on every atom. It was trained to reproduce those
+numbers from expensive quantum-mechanical calculations, and once trained it
+computes them thousands of times faster than the calculation it was trained on.
+That speed is the entire point — a molecular dynamics simulation has to ask the
+same question again at every timestep, often millions of times over, to trace
+out how atoms actually move.
 
 ## Why it belongs in this course
 
-> The case for spending a reader's time on it: what it lets an agentic system do
-> that is hard or impossible otherwise, and what goes wrong without it.
->
-> This seeds `02-motivation`. Be specific to agentic development — if the reason
-> would read the same for any programming topic, keep going.
-
-Replace this paragraph.
+An agent doing materials or molecule discovery — proposing candidates, testing
+them, deciding what to try next — needs physics feedback that is both fast
+enough to call over and over and trustworthy enough to act on. Quantum
+calculations (DFT) are trustworthy but too slow to sit inside that loop;
+classical force fields are fast but not accurate or transferable enough for an
+agent to trust their verdict blindly. MACE is fast and accurate enough to be the
+"evaluate" step of that loop, which is what turns an agent that can talk about
+materials into one that can actually run a closed-loop discovery campaign.
 
 ## What the reader will be able to do
 
-> The capability the tutorial delivers, as a short list of actions the reader can
-> take afterwards that they could not take before. Not topics covered — things
-> done.
->
-> This is the promise `04-conclusion` has to keep, and the standard the panel
-> holds the whole tutorial to. Vague entries here buy vague review, the same way
-> a vague `audience` does.
-
-- (capability)
-- (capability)
+- Explain, in plain terms, what a machine-learned interatomic potential does and
+  why molecular dynamics needs one at every timestep
+- Describe MACE's mental model — atoms as a graph, equivariant many-body message
+  passing — well enough to predict roughly how it will behave on a system they
+  have not seen it run on
+- Load a pretrained MACE foundation model into ASE and run a molecular dynamics
+  simulation with it
+- Fine-tune a MACE foundation model on new data and recognize the signs that a
+  prediction is being extrapolated beyond what the model has learned
+- Describe how MACE, plus an uncertainty signal, serves as a callable tool
+  inside an agentic materials-discovery loop (propose → evaluate → decide →
+  refine)
 
 ## Scope
 
-> What the tutorial covers and, explicitly, what it does not. Adjacent topics a
-> reader might expect and will not get belong here with one clause of reason —
-> naming them stops a reviewer reporting them as gaps and stops the team drifting
-> back into them.
-
 **In scope**
 
-- (in)
+- What potential energy surfaces and forces are, and why MD needs them
+  recomputed at every step
+- The lineage from classical force fields through DFT to machine-learned
+  potentials (Behler–Parrinello, GAP, the Atomic Cluster Expansion) to MACE
+- MACE's mental model: atoms as a graph, message passing, equivariance, and why
+  "higher order" messages matter
+- Running MD with a pretrained MACE foundation model (e.g. MACE-MP-0) via ASE,
+  and fine-tuning it on new data
+- How MACE, and a committee's uncertainty signal, serve as a tool inside an
+  agentic active-learning / discovery loop
 
 **Out of scope**
 
-- (out, and why)
+- The full mathematics of the Atomic Cluster Expansion or E(3)-equivariant
+  tensor algebra — cited, not rederived
+- Training a MACE model completely from scratch (only fine-tuning a foundation
+  model)
+- Electronic-structure theory beyond what explains why DFT is the "ground
+  truth" and why it is slow
+- Building or evaluating a specific agent framework (LangChain, AutoGen, etc.)
+  — we describe the shape of the loop, not implement an agent
 
 ## Shape
 
-> How the four sections divide the material, if you already know. Which one
-> carries the weight, what the worked example in `03-content` will be, whether
-> the arc needs changing for this subject.
->
-> Leave it thin on the first pass. It is here so the reason for a structural
-> choice is written down before the rounds start arguing about it.
-
-- (note)
+- `03-content` carries the weight and needs more than four `##` units: a
+  physics-first-principles bridge, an ML-first-principles bridge, MACE's
+  specific mental model, two worked examples (a basic MD run, then
+  fine-tuning/active learning), the agentic tie-in, and pitfalls.
+- The worked examples use ASE and a pretrained MACE-MP-0 foundation model on a
+  small, widely recognizable system, so every reader can follow without a GPU
+  or a chemistry background.
+- `02-motivation` leads with the agentic-loop argument specifically — DFT is
+  too slow to sit in the loop, a classical force field is fast but untrustworthy
+  in it — since "why it matters for agentic development" is the standard this
+  course judges every topic against.
 
 ## Open questions
 
-> What the team has not settled: an unresolved framing, an example you are not
-> sure earns its place, a claim you cannot yet support.
->
-> Naming these is cheap now and expensive in review. The panel reads them and
-> will not report a known unknown as a discovery.
-
-- (question)
+- How much of the underlying quantum mechanics (DFT) needs its own explanation
+  versus being treated as an unexplained "ground truth."
+- Whether the worked example should be a molecule (water, a small organic) or a
+  solid-state system (an alloy or crystal) — the foundation model covers both,
+  and the choice affects which background reads as home turf for which readers.
+- Whether to show live code output (a rendered trajectory or plot) or describe
+  it, given the document is a static PDF/site.

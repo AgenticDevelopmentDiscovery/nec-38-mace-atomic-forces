@@ -1,40 +1,46 @@
 # Context
 
-<!-- SHIPPED PROSE. This file is rendered into all three outputs.
-     Every `##` below becomes one slide — keep each to one idea.
-     Delete these comments and the guidance blockquotes as you write. -->
-
 ## What this is
 
-> Name the topic and say plainly what it is, in one paragraph, before any
-> argument about why it matters. A reader who stops here should be able to
-> describe the thing correctly to someone else, even if coarsely.
->
-> Define it in terms of what it *does*, not what it is built from. Resist the
-> urge to justify it — that is the next section's job, and mixing the two is the
-> most common way a tutorial loses its opening.
-
-Replace this paragraph.
+Molecular dynamics simulates how atoms move by repeatedly asking two
+questions: how much potential energy does this arrangement of atoms have, and
+what force is each atom feeling as a result? MACE is a program that answers
+both. Give it the positions and chemical elements of a group of atoms, and it
+returns the potential energy of that arrangement and the force on every atom —
+numbers it was trained to reproduce from expensive quantum-mechanical
+calculations, but that it can now compute thousands of times faster than the
+calculation it learned from. That speed is the whole point: a molecular
+dynamics simulation asks MACE's question again at every timestep, often
+millions of times over, to trace out how atoms actually move.
 
 ## Where it came from
 
-> The short history: what problem it was invented to solve, by whom or in what
-> setting, and what people did before it existed.
->
-> This is not a literature survey and not a timeline. Two or three sentences of
-> origin earn their place because they explain the design — most of what looks
-> arbitrary about a tool is a fossil of the problem it was built for. Cut any
-> history that does not explain something the reader will meet later.
-
-Replace this paragraph.
+Before machine learning entered the picture, molecular dynamics ran on
+classical force fields: hand-written formulas — springs for bonds, simple pair
+potentials for everything else — fast enough for millions of atoms but only as
+accurate as the chemistry their author anticipated. The gold-standard
+alternative is density functional theory (DFT) [@behler2007generalized], a
+quantum-mechanical calculation accurate enough to trust but far too slow to
+repeat at every timestep. Machine-learned interatomic potentials close that
+gap: train a flexible model on a library of DFT answers, then let it stand in
+for DFT at a fraction of the cost. Early versions proved the idea worked
+[@bartok2010gap]. MACE is the current point on that line — it folds the Atomic
+Cluster Expansion's systematic, many-body description of an atom's
+neighborhood [@drautz2019ace] into a graph neural network built to respect
+physical symmetry [@batatia2022mace], and pretrained "foundation model"
+versions now cover most of the periodic table out of the box
+[@batatia2024foundation].
 
 ## What this tutorial covers
 
-> The scope and the roadmap. Name each section and what the reader gets from it,
-> and say what the reader will be able to *do* by the end — a capability, not a
-> list of topics.
->
-> Say what is out of scope here too. This is the promise the rest of the tutorial
-> must keep, and the panel will check it against what you actually delivered.
-
-Replace this paragraph.
+This tutorial goes from why molecular dynamics needs a potential at all to
+running one with MACE. § Motivation makes the case for why a fast, accurate
+potential specifically matters to an agentic materials-discovery workflow, and
+where it stops being the right tool. § Content builds the mental model — atoms
+as a graph, read through message passing — then walks through running a
+MACE-driven simulation and fine-tuning a foundation model, before showing MACE
+acting as a callable tool inside an agent's propose-evaluate-decide loop. §
+Conclusion names what you can now do and where the open edges are. It does not
+cover the underlying quantum mechanics in depth, training a MACE model from
+scratch, or building a full agent framework — each is named and set aside as it
+comes up.

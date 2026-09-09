@@ -1,28 +1,41 @@
 # Motivation — spine
 
-> Note form only; never rendered. See `01-context.concepts.md` for what each
-> heading is for.
-
 ## Purpose
 
-Say WHY the topic is important for agentic development, and bound where it
+Say WHY MACE matters specifically for agentic development, and bound where it
 applies.
 
 ## Claims
 
-> Here these are the value claims: what it buys, what it prevents, where it stops
-> being the right tool. Each one should be something a reader could disagree with.
-
-- (claim)
+- An agentic materials/molecule-discovery loop (propose → evaluate → decide →
+  refine) needs a physics evaluator fast enough to call inside the loop, not
+  just accurate in isolation.
+- DFT is accurate but far too slow to call at agentic-loop speed; classical
+  force fields are fast but not trustworthy enough for an agent to act on their
+  verdict.
+- MACE is fast and accurate enough to be that in-loop evaluator, which is what
+  turns "an agent that talks about materials" into "an agent that can actually
+  run a discovery campaign."
+- MACE has real bounds: it is only as good as its training data's coverage, so
+  it is the wrong tool for chemistry, elements, or conditions its foundation
+  model or fine-tuning set never saw.
 
 ## Decisions
 
-- (decision — and what it was chosen over)
+- Grounded "why it matters for agentic development" in the shape of an agent's
+  loop specifically (propose/evaluate/decide), not a general "ML is useful"
+  argument, per the course standard that the case must be specific to agentic
+  development.
+- Used a concrete DFT-latency contrast (minutes-to-hours per structure vs.
+  thousands of calls in an afternoon) rather than an abstract speed claim,
+  since it's the number that makes the bottleneck real.
 
 ## Open questions
 
-- (question)
+- Whether to cite hard DFT wall-clock numbers (system-dependent) or keep the
+  contrast qualitative.
 
 ## Not doing
 
-- (excluded, and why)
+- Not describing how to build an agent that calls MACE — that's a sketch in
+  `03-content`, not a spec here.

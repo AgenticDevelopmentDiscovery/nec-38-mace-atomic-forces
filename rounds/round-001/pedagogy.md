@@ -1,0 +1,26 @@
+# Pedagogical Readiness — Round 1
+
+**Recommendation:** needs revision
+— the conceptual arc is sound and well-paced, but the document promises hands-on capability it never actually shows.
+
+**Audience read against:** Graduate and advanced-undergraduate students in an agentic-AI course (CS, ChemE, MatSci, and other majors), comfortable reading Python, with no assumed background in quantum chemistry, molecular simulation, or neural-network architectures. They should leave able to explain what an MLIP does, run a MACE-driven MD simulation, and reason about MACE as a callable tool in an agentic loop.
+
+## Strengths
+
+- The WHAT→WHY→HOW→WHAT ELSE arc is followed exactly as the template prescribes, and each section stays inside its own job — `01-context` never argues the agentic case, `02-motivation` never explains the architecture. A reader builds the mental model in the right order.
+- `02-motivation`'s DFT-too-slow / classical-FF-too-untrustworthy contrast is concrete (minutes-to-hours per DFT call vs. thousands of MACE calls in an afternoon) and grounded specifically in the agent's propose→evaluate→decide→refine loop, exactly the standard this course judges every topic against.
+- `03-content`'s "Pitfalls" section is the strongest writing in the document for this audience: extrapolation, MD blow-up, and unit mismatches (eV vs. kcal/mol, per-atom vs. total) are named as concrete, checkable failure modes rather than abstract caveats — this is the kind of worked detail the rest of `03-content` is missing.
+- Choosing a water molecule as the running example (per the spine's stated decision) is the right call for a mixed CS/ChemE/MatSci audience — it is home turf for no one exclusively and unfamiliar to no one.
+
+## Weaknesses
+
+- **`sections/03-content.prose.md` — no code, command, or output appears anywhere in the document.** Both "Using it" subsections describe what a reader would do ("a few dozen lines of Python," "starting from the pretrained weights and continuing training") but never show a single import, function call, or terminal output. `topic.md` promises the reader will be able to "Load a pretrained MACE foundation model into ASE and run a molecular dynamics simulation with it" and "Fine-tune a MACE foundation model on new data" — as written, a reader who has only this document cannot do either; they would need to leave the tutorial and reconstruct the steps from the ASE/MACE docs themselves. This is the single largest gap between what the document promises and what it delivers.
+- **`sections/03-content.concepts.md` § Decisions — the spine explicitly commits to "two worked cases (basic MD run, then fine-tuning/active learning)," but the prose delivers two *described* cases, not two *worked* ones.** The spine's own word choice ("worked") is not met by the delivery, and `04-conclusion.prose.md` compounds this by asserting the reader "can... run a MACE-driven molecular dynamics simulation" and "fine-tune that model" as accomplished facts — a stronger claim than anything actually demonstrated in `03-content`.
+- **`sections/03-content.prose.md` § Using it: fine-tuning and active learning — the committee/uncertainty signal, which is the mechanism an agent actually uses to decide trust, stays entirely abstract** ("close agreement suggests a reliable prediction, and disagreement is a usable signal"). No numbers, no illustrative scale of agreement vs. disagreement is given, even though this signal is the crux of the agentic tie-in the whole tutorial builds toward.
+
+## Actionable
+
+1. `sections/03-content.prose.md` § Using it: running your first MACE molecular dynamics simulation — add a short, real code block (imports, building the `Atoms` object, attaching the MACE calculator, calling an ASE dynamics integrator for a handful of steps) even in static form. (*why:* this alone would move the document from "needs revision" to "minor polish" — it is the one gap large enough to determine the whole recommendation.)
+2. `sections/03-content.prose.md` § Using it: fine-tuning and active learning — add a minimal concrete anchor: a CLI invocation or config snippet showing what "fine-tune on a small DFT dataset" actually looks like in practice, even without full output. (*why:* closes the second half of the same capability-vs-delivery gap topic.md and the conclusion both claim is closed.)
+3. `sections/03-content.prose.md` § Using it: fine-tuning and active learning — give the committee's disagreement signal one concrete illustrative scale (e.g., "agreement within a few meV/atom on familiar structures vs. large spread on an unfamiliar one") instead of leaving it purely qualitative. (*why:* moves the agentic tie-in from asserted to demonstrated, buys readiness at low cost since it's a sentence, not a new example.)
+4. `sections/03-content.prose.md` § MACE's mental model — reads as one dense paragraph carrying graph representation, message passing, many-body order, and equivariance together for a reader with no assumed NN background; consider whether the figure plus prose earns two beats instead of one once the `visual` reviewer's read of the actual slide is in. (*why:* pacing polish, lower priority than the code gap since the figure is already doing real work here.)
