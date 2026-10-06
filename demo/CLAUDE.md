@@ -1,5 +1,7 @@
 # MACE agentic demo
 
+> Setting up, verifying or rehearsing the demo rather than performing it? Read `AGENT_RUNBOOK.md`.
+
 This folder is a live classroom demo: Claude Code acts as a discovery agent and uses
 MACE-MP-0 (a machine-learned interatomic potential) as its physics tool.
 
