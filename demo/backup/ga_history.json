@@ -1,0 +1,103 @@
+{
+  "history": [
+    {
+      "gen": 0,
+      "best": 51.99313163757324,
+      "mean": 80.43457567691803,
+      "best_genome": "ACACAACAACACCCAAAACCAAACCCCACCAC"
+    },
+    {
+      "gen": 1,
+      "best": 35.84146499633789,
+      "mean": 70.07476687431335,
+      "best_genome": "ACACAACAAACCAACCCAACCCAAAACCCACC"
+    },
+    {
+      "gen": 2,
+      "best": 35.84146499633789,
+      "mean": 57.27796256542206,
+      "best_genome": "ACACAACAAACCAACCCAACCCAAAACCCACC"
+    },
+    {
+      "gen": 3,
+      "best": 21.86894416809082,
+      "mean": 59.45977568626404,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 4,
+      "best": 21.86894416809082,
+      "mean": 56.55398964881897,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 5,
+      "best": 21.86894416809082,
+      "mean": 50.09277164936066,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 6,
+      "best": 21.86894416809082,
+      "mean": 43.93655061721802,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 7,
+      "best": 21.86894416809082,
+      "mean": 44.535234570503235,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 8,
+      "best": 21.86894416809082,
+      "mean": 50.55418610572815,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 9,
+      "best": 21.86894416809082,
+      "mean": 55.29792606830597,
+      "best_genome": "CCAACACAAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 10,
+      "best": 18.851518630981445,
+      "mean": 52.71376669406891,
+      "best_genome": "CCAACACAAACCAACCCCAAACACAACCAACC"
+    },
+    {
+      "gen": 11,
+      "best": 18.55325698852539,
+      "mean": 50.594136118888855,
+      "best_genome": "CCAACAACAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 12,
+      "best": 18.55325698852539,
+      "mean": 45.244455337524414,
+      "best_genome": "CCAACAACAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 13,
+      "best": 18.55325698852539,
+      "mean": 39.51980173587799,
+      "best_genome": "CCAACAACAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 14,
+      "best": 18.55325698852539,
+      "mean": 47.147125005722046,
+      "best_genome": "CCAACAACAACCAACCCAACCCAAAACCAACC"
+    },
+    {
+      "gen": 15,
+      "best": 18.437623977661133,
+      "mean": 45.369669795036316,
+      "best_genome": "CCACCACAAACCAACCCCAAACAAAACCAACC"
+    }
+  ],
+  "best": "CCACCACAAACCAACCCCAAACAAAACCAACC",
+  "L10": -17.891883850097656,
+  "random_avg": 73.31439852714539
+}
