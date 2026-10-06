@@ -1,0 +1,22 @@
+gen  0  best    52.0  mean    80.4 meV/atom   ACACAACA|ACACCCAA|AACCAAAC|CCCACCAC
+gen  1  best    35.8  mean    70.1 meV/atom   ACACAACA|AACCAACC|CAACCCAA|AACCCACC
+gen  2  best    35.8  mean    57.3 meV/atom   ACACAACA|AACCAACC|CAACCCAA|AACCCACC
+gen  3  best    21.9  mean    59.5 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  4  best    21.9  mean    56.6 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  5  best    21.9  mean    50.1 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  6  best    21.9  mean    43.9 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  7  best    21.9  mean    44.5 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  8  best    21.9  mean    50.6 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen  9  best    21.9  mean    55.3 meV/atom   CCAACACA|AACCAACC|CAACCCAA|AACCAACC
+gen 10  best    18.9  mean    52.7 meV/atom   CCAACACA|AACCAACC|CCAAACAC|AACCAACC
+gen 11  best    18.6  mean    50.6 meV/atom   CCAACAAC|AACCAACC|CAACCCAA|AACCAACC
+gen 12  best    18.6  mean    45.2 meV/atom   CCAACAAC|AACCAACC|CAACCCAA|AACCAACC
+gen 13  best    18.6  mean    39.5 meV/atom   CCAACAAC|AACCAACC|CAACCCAA|AACCAACC
+gen 14  best    18.6  mean    47.1 meV/atom   CCAACAAC|AACCAACC|CAACCCAA|AACCAACC
+gen 15  best    18.4  mean    45.4 meV/atom   CCACCACA|AACCAACC|CCAAACAA|AACCAACC
+
+Best found : CCACCACA|AACCAACC|CCAAACAA|AACCAACC     18.4 meV/atom
+L1_0 CuAu  : CCCCCCCC|AAAAAAAA|CCCCCCCC|AAAAAAAA    -17.9 meV/atom  (known ordered phase)
+Random avg :                                         73.3 meV/atom
+235 MACE evaluations in 17 s
+wrote ga_progress.png, ga_history.json

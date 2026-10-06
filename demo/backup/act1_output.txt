@@ -1,0 +1,9 @@
+Stretched  O-H bonds: 1.282 Å, 0.969 Å
+Energy: -12.855 eV
+Forces (eV/Å):
+  O  [ +0.000  +4.640  -2.535]   |F| = 5.287
+  H  [ +0.000  -4.396  +3.031]   |F| = 5.340
+  H  [ +0.000  -0.243  -0.495]   |F| = 0.552
+
+Relaxed    O-H bonds: 0.974 Å, 0.974 Å   (experiment ≈ 0.96 Å)
+Energy: -14.052 eV   max |F| = 0.002 eV/Å
